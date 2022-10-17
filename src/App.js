@@ -1,23 +1,24 @@
-import logo from './logo.svg';
+/* eslint-disable no-undef */
+import { useEffect } from 'react';
 import './App.css';
 
+const telegram = Telegram.WebApp;
+console.log('telegram: ', telegram);
+
 function App() {
+
+  useEffect(() => {
+    telegram.ready();
+  }, [])
+
+  const onClose = () => {
+    telegram.close();
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      5mood app
+      <button onClick={onClose}>Close</button>
     </div>
   );
 }
