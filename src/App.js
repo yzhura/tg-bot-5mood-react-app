@@ -1,23 +1,14 @@
-/* eslint-disable no-undef */
-import { useEffect } from 'react';
-import './App.css';
 
-const telegram = Telegram.WebApp;
-console.log('telegram: ', telegram);
+import './App.css';
+import { useTelegram } from './hooks/useTelegram';
 
 function App() {
 
-  useEffect(() => {
-    telegram.ready();
-  }, [])
-
-  const onClose = () => {
-    telegram.close();
-  }
+  const {user, onClose} = useTelegram();
 
   return (
     <div className="App">
-      5mood app
+      5mood app { user }
       <button onClick={onClose}>Close</button>
     </div>
   );
