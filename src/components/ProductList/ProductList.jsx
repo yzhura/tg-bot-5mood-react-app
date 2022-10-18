@@ -77,11 +77,11 @@ export const ProductList = () => {
   console.log('totalPrice: ', totalPrice);
   if (isCartNotEmpty) {
     telegram.MainButton.show();
-  } else {
-    telegram.MainButton.hide();
     telegram.MainButton.setParams({
       text: `Замовити! Загальна сумма: ${totalPrice} грн`
     })
+  } else {
+    telegram.MainButton.hide();
   }
 
   const onAddHandler = (id) => {
