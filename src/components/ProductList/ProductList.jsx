@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   CardContent,
   Typography,
@@ -66,15 +66,14 @@ const products = [
 ];
 
 export const ProductList = () => {
-  const { telegram } = useTelegram();
-  const [addedItems, setAddedItems] = useState(products);
-  const isCartNotEmpty = addedItems.some((item) => item.count !== 0);
-  const totalPrice = addedItems.reduce((acc, curItem) => {
+  const { telegram, queryId } = useTelegram();
+  const [productsItems, setProductsItems] = useState(products);
+  const isCartNotEmpty = productsItems.some((item) => item.count !== 0);
+  const totalPrice = productsItems.reduce((acc, curItem) => {
     const curItemPrice = curItem.count * curItem.price;
     return acc += curItemPrice;
   }, 0)
-  
-  console.log('totalPrice: ', totalPrice);
+
   if (isCartNotEmpty) {
     telegram.MainButton.show();
     telegram.MainButton.setParams({
@@ -85,28 +84,54 @@ export const ProductList = () => {
   }
 
   const onAddHandler = (id) => {
-    const updatedItems = addedItems.map((product) => {
+    const updatedItems = productsItems.map((product) => {
       if (product.id === id) {
         product.count += 1;
       }
       return product;
     });
-    setAddedItems(updatedItems);
+    setProductsItems(updatedItems);
   };
 
   const onDeleteHandler = (id) => {
-    const updatedItems = addedItems.map((product) => {
+    const updatedItems = productsItems.map((product) => {
       if (product.id === id) {
         product.count -= 1;
       }
       return product;
     });
-    setAddedItems(updatedItems);
+    setProductsItems(updatedItems);
   };
+
+  const onSendData = useCallback(() => {
+    const itemsInCart = productsItems.filter((product) => product.count > 0)
+    const data = {
+      order: itemsInCart,
+      totalPrice,
+      queryId,
+    }
+
+    fetch('http://localhost:8000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productsItems])
+
+  useEffect(() => {
+    telegram.onEvent('mainButtonClicked', onSendData)
+    return () => {
+      telegram.offEvent('mainButtonClicked', onSendData)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onSendData])
 
   return (
     <Grid container spacing={2}>
-      {addedItems.map(({ id, title, price, oldprice, img, count }) => {
+      {productsItems.map(({ id, title, price, oldprice, img, count }) => {
         const isMoreThanZero = count > 0;
         return (
           <Grid item xs={6} md={4} key={id}>
