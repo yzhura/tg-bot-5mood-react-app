@@ -118,8 +118,8 @@ export const ProductList = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-    }).then(() => {
-      alert(2);
+    }).catch((error) => {
+      alert(error)
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productsItems])
