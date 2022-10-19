@@ -134,7 +134,7 @@ export const ProductList = () => {
 
   return (
     <Grid container spacing={2}>
-      {/* <Button onClick={onSendData}>Test</Button> */}
+      <Button onClick={onSendData}>Test</Button>
       {productsItems.map(({ id, title, price, oldprice, img, count }) => {
         const isMoreThanZero = count > 0;
         return (
