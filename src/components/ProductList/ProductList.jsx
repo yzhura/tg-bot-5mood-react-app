@@ -105,6 +105,7 @@ export const ProductList = () => {
 
   const onSendData = useCallback(() => {
     const itemsInCart = productsItems.filter((product) => product.count > 0)
+    alert(1);
     const data = {
       order: itemsInCart,
       totalPrice,
@@ -117,6 +118,8 @@ export const ProductList = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
+    }).then(() => {
+      alert(2);
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productsItems])
