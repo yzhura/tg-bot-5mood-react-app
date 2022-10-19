@@ -111,7 +111,7 @@ export const ProductList = () => {
       queryId,
     }
 
-    fetch('http://localhost:8000/web-data', {
+    fetch('http://localhost:8080/web-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -131,6 +131,7 @@ export const ProductList = () => {
 
   return (
     <Grid container spacing={2}>
+      <Button onClick={onSendData}>Test</Button>
       {productsItems.map(({ id, title, price, oldprice, img, count }) => {
         const isMoreThanZero = count > 0;
         return (
