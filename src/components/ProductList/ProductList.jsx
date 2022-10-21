@@ -9,8 +9,13 @@ import {
   Grid,
   IconButton,
   Box,
+  ButtonGroup,
+  Badge,
 } from "@mui/material";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import ViewAgendaIcon from "@mui/icons-material/ViewAgenda";
+import ViewColumnIcon from "@mui/icons-material/ViewColumn";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import corsetImg from "../../images/corset.jpg";
 import "./Product.css";
 import { useTelegram } from "../../hooks/useTelegram";
@@ -68,17 +73,18 @@ const products = [
 export const ProductList = () => {
   const { telegram, queryId } = useTelegram();
   const [productsItems, setProductsItems] = useState(products);
+  const [xsCols, setXsCols] = useState(true);
   const isCartNotEmpty = productsItems.some((item) => item.count !== 0);
   const totalPrice = productsItems.reduce((acc, curItem) => {
     const curItemPrice = curItem.count * curItem.price;
-    return acc += curItemPrice;
-  }, 0)
+    return (acc += curItemPrice);
+  }, 0);
 
   if (isCartNotEmpty) {
     telegram.MainButton.show();
     telegram.MainButton.setParams({
-      text: `Замовити! Загальна сумма: ${totalPrice} грн`
-    })
+      text: `Замовити! Загальна сумма: ${totalPrice} грн`,
+    });
   } else {
     telegram.MainButton.hide();
   }
@@ -104,82 +110,117 @@ export const ProductList = () => {
   };
 
   const onSendData = useCallback(() => {
-    const itemsInCart = productsItems.filter((product) => product.count > 0)
+    const itemsInCart = productsItems.filter((product) => product.count > 0);
     const data = {
       order: itemsInCart,
       totalPrice,
+      // queryId: queryId || '',
       queryId,
-    }
-
-    fetch('https://5mood-tg-bot.azurewebsites.net/web-data', {
-      method: 'POST',
+    };
+    //https://5mood-tg-bot.azurewebsites.net/web-data
+    //http://localhost:8000/web-data
+    fetch("https://5mood-tg-bot.azurewebsites.net/web-data", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     }).catch((error) => {
-      console.log('error: ', error);
-    })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productsItems])
+      console.log("error: ", error);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productsItems]);
 
   useEffect(() => {
-    telegram.onEvent('mainButtonClicked', onSendData)
+    telegram.onEvent("mainButtonClicked", onSendData);
     return () => {
-      telegram.offEvent('mainButtonClicked', onSendData)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onSendData])
+      telegram.offEvent("mainButtonClicked", onSendData);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onSendData]);
+
+  const toggleXsCols = () => {
+    setXsCols(!xsCols);
+  };
 
   return (
-    <Grid container spacing={2}>
-      {productsItems.map(({ id, title, price, oldprice, img, count }) => {
-        const isMoreThanZero = count > 0;
-        return (
-          <Grid item xs={6} md={4} key={id}>
-            <Card>
-              <CardMedia component="img" height="175" image={img} alt={title} />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {title}
-                </Typography>
-                {oldprice && (
-                  <Typography variant="body2" color="text.secondary">
-                    Стара ціна:{" "}
-                    <span
-                      style={{
-                        textDecoration: "line-through",
-                      }}
-                    >
-                      {oldprice} грн.
-                    </span>
-                  </Typography>
-                )}
-                <Typography variant="body2" color="text.secondary">
-                  Ціна: {price} грн.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Box width="100%" display="flex" justifyContent="space-between">
-                  <Box display="flex" alignItems="center">
-                    <IconButton onClick={() => onDeleteHandler(id)}>
-                      {isMoreThanZero && (
-                        <>
-                          <RemoveCircleOutlineIcon />
-                        </>
-                      )}
-                    </IconButton>
-                    <Typography>{isMoreThanZero && count}</Typography>
+    <>
+      {/* <Button onClick={onSendData}>Test Post</Button> */}
+      <Box padding={1} display="flex" justifyContent="flex-end">
+        <IconButton onClick={toggleXsCols}>
+          {xsCols ? <ViewColumnIcon /> : <ViewAgendaIcon /> }
+        </IconButton>
+      </Box>
+      <Grid container spacing={2}>
+        {productsItems.map(({ id, title, price, oldprice, img, count }) => {
+          const isMoreThanZero = count > 0;
+          return (
+            <Grid item xs={xsCols ? 12 : 6} md={4} key={id}>
+              <Box position="relative">
+                <Card>
+                  <Box position="absolute" right="0" top="-10px">
+                    <Badge badgeContent={count} color="primary"/>
                   </Box>
-                  <Button size="small" onClick={() => onAddHandler(id)}>
-                    Замовити
-                  </Button>
-                </Box>
-              </CardActions>
-            </Card>
-          </Grid>
-        );
-      })}
-    </Grid>
+                  <CardMedia
+                    component="img"
+                    height="175"
+                    image={img}
+                    alt={title}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h6" component="p">
+                      {title}
+                    </Typography>
+                    {oldprice && (
+                      <Typography variant="body2" color="text.secondary">
+                        <span
+                          style={{
+                            textDecoration: "line-through",
+                          }}
+                        >
+                          {oldprice} грн.
+                        </span>
+                      </Typography>
+                    )}
+                    <Typography variant="body2" color="text.secondary">
+                      <strong>{price} грн.</strong>
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Box
+                      width="100%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      {isMoreThanZero ? (
+                        <>
+                          <ButtonGroup>
+                            <Button onClick={() => onDeleteHandler(id)}>
+                              <RemoveIcon fontSize="medium" />
+                            </Button>
+                            <Button onClick={() => onAddHandler(id)}>
+                              <AddIcon fontSize="medium" />
+                            </Button>
+                          </ButtonGroup>
+                        </>
+                      ) : (
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          onClick={() => onAddHandler(id)}
+                        >
+                          Додати
+                        </Button>
+                      )}
+                    </Box>
+                  </CardActions>
+                </Card>
+              </Box>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </>
   );
 };

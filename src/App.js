@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
 import { useEffect } from "react";
-import "./App.css";
 import { ProductList } from "./components/ProductList/ProductList";
 import { useTelegram } from "./hooks/useTelegram";
+import "./App.css";
 
 function App() {
   const { telegram } = useTelegram();
@@ -12,7 +12,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { user, onClose } = useTelegram();
+  const { user } = useTelegram();
 
   return (
     <div className="App">
@@ -20,7 +20,6 @@ function App() {
         Вітаю, {user?.first_name || "тебе"}! Гарного дня
       </Typography>
       <ProductList />
-      <button onClick={onClose}>Close</button>
     </div>
   );
 }
