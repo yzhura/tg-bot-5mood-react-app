@@ -113,7 +113,7 @@ export const ProductList = () => {
       queryId,
     }
 
-    fetch('https://regal-bonbon-664a6e.netlify.app/web-data', {
+    fetch('https://5mood-tg-bot.azurewebsites.net/web-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
