@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import "./App.css";
-import { ProductList } from "./components/ProductList/ProductList";
+// import { ProductList } from "./components/ProductList/ProductList";
 import { useTelegram } from "./hooks/useTelegram";
 
 function App() {
