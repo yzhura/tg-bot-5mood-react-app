@@ -113,7 +113,7 @@ export const ProductList = () => {
       queryId,
     }
 
-    fetch('http://localhost:8000/web-data', {
+    fetch('https://regal-bonbon-664a6e.netlify.app/web-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
