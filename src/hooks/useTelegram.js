@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-const telegram = Telegram.WebApp;
+const telegram = window.Telegram.WebApp;
 
 export const useTelegram = () => {
 
