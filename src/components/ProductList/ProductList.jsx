@@ -112,7 +112,7 @@ export const ProductList = () => {
       queryId,
     }
 
-    fetch('http://35.158.114.103:3100/web-data', {
+    fetch('https://5mood-tg-bot.azurewebsites.net/web-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
