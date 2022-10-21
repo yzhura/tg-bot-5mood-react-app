@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="App">
-      5mood app {user}
+      5mood app {user?.first_name}
       {/* <ProductList /> */}
       <button onClick={onClose}>Close</button>
     </div>
