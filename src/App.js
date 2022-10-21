@@ -1,24 +1,23 @@
-
-import { useEffect } from 'react';
-import './App.css';
-import { ProductList } from './components/ProductList/ProductList';
-import { useTelegram } from './hooks/useTelegram';
-
-// eslint-disable-next-line no-undef
-const telegram = Telegram.WebApp;
+import { useEffect } from "react";
+import "./App.css";
+import { ProductList } from "./components/ProductList/ProductList";
+import { useTelegram } from "./hooks/useTelegram";
 
 function App() {
+  const { telegram } = useTelegram();
 
   useEffect(() => {
-    telegram.ready()
-  }, [])
+    telegram.ready();
+    console.log('telegram: ', telegram);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const {user, onClose} = useTelegram();
+  const { user, onClose } = useTelegram();
 
   return (
     <div className="App">
-      5mood app { user }
-      <ProductList/>
+      5mood app {user}
+      <ProductList />
       <button onClick={onClose}>Close</button>
     </div>
   );
