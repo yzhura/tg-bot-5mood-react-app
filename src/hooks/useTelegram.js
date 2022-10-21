@@ -5,7 +5,7 @@ const telegram = Telegram.WebApp;
 export const useTelegram = () => {
 
     const onClose = () => {
-        telegram.close();
+      telegram.close();
     }
 
     // const onToggleButton = () => {

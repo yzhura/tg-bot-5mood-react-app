@@ -67,6 +67,7 @@ const products = [
 
 export const ProductList = () => {
   const { telegram, queryId } = useTelegram();
+  console.log('queryId: ', queryId);
   const [productsItems, setProductsItems] = useState(products);
   const isCartNotEmpty = productsItems.some((item) => item.count !== 0);
   const totalPrice = productsItems.reduce((acc, curItem) => {
@@ -105,21 +106,21 @@ export const ProductList = () => {
 
   const onSendData = useCallback(() => {
     const itemsInCart = productsItems.filter((product) => product.count > 0)
-    alert(1);
+    console.log('queryId: ', queryId);
     const data = {
       order: itemsInCart,
       totalPrice,
       queryId,
     }
 
-    fetch('https://5mood-tg-bot.azurewebsites.net/web-data', {
+    fetch('http://localhost:8000/web-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     }).catch((error) => {
-      alert(error)
+      console.log('error: ', error);
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productsItems])
