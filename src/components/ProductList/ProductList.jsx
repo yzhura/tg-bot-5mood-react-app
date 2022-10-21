@@ -67,7 +67,6 @@ const products = [
 
 export const ProductList = () => {
   const { telegram, queryId } = useTelegram();
-  console.log('queryId: ', queryId);
   const [productsItems, setProductsItems] = useState(products);
   const isCartNotEmpty = productsItems.some((item) => item.count !== 0);
   const totalPrice = productsItems.reduce((acc, curItem) => {
@@ -106,7 +105,6 @@ export const ProductList = () => {
 
   const onSendData = useCallback(() => {
     const itemsInCart = productsItems.filter((product) => product.count > 0)
-    console.log('queryId: ', queryId);
     const data = {
       order: itemsInCart,
       totalPrice,
@@ -135,7 +133,6 @@ export const ProductList = () => {
 
   return (
     <Grid container spacing={2}>
-      <Button onClick={onSendData}>Test</Button>
       {productsItems.map(({ id, title, price, oldprice, img, count }) => {
         const isMoreThanZero = count > 0;
         return (

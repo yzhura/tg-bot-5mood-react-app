@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useEffect } from "react";
 import "./App.css";
 import { ProductList } from "./components/ProductList/ProductList";
@@ -15,7 +16,9 @@ function App() {
 
   return (
     <div className="App">
-      5mood app {user?.first_name}
+      <Typography m={2} textAlign="center">
+        Вітаю, {user?.first_name || "тебе"}! Гарного дня
+      </Typography>
       <ProductList />
       <button onClick={onClose}>Close</button>
     </div>
