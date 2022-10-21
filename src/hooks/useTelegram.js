@@ -20,7 +20,7 @@ export const useTelegram = () => {
     onClose,
     // onToggleButton,
     telegram,
-    user: telegram.initDataUnsafe.user,
-    queryId: telegram.initDataUnsafe.query_id,
+    user: telegram?.initDataUnsafe?.user,
+    queryId: telegram?.initDataUnsafe?.query_id,
   }
 }
